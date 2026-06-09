@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Dzaky Almer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #050508;
+            --surface: rgba(255, 255, 255, 0.03);
+            --surface-hover: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(129, 140, 248, 0.3);
+            --text-primary: #e2e8f0;
+            --text-secondary: rgba(226, 232, 240, 0.5);
+            --text-muted: rgba(226, 232, 240, 0.3);
+            --accent-indigo: #818cf8;
+            --accent-amber: #fbbf24;
+            --accent-emerald: #4ade80;
+            --accent-rose: #f472b6;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+
+        .bg-mesh {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .bg-mesh .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            animation: orbFloat 15s ease-in-out infinite;
+        }
+        .bg-mesh .orb-1 {
+            width: 600px; height: 600px;
+            background: var(--accent-indigo);
+            top: -20%; left: -10%;
+            animation-delay: 0s;
+        }
+        .bg-mesh .orb-2 {
+            width: 500px; height: 500px;
+            background: var(--accent-amber);
+            bottom: -20%; right: -10%;
+            animation-delay: -5s;
+        }
+        .bg-mesh .orb-3 {
+            width: 400px; height: 400px;
+            background: var(--accent-indigo);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        .glass-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .glass-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(129, 140, 248, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #e2e8f0 0%, #818cf8 50%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+            transition: left 0.7s ease;
+        }
+        .stat-card:hover::before {
+            left: 100%;
+        }
+        .stat-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .message-card {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .message-card:last-child {
+            border-bottom: none;
+        }
+        .message-card:hover {
+            background: var(--surface-hover);
+        }
+        .message-card.unread {
+            border-left: 3px solid var(--accent-indigo);
+            background: rgba(129, 140, 248, 0.03);
+        }
+        .message-card.unread::before {
+            content: '';
+            position: absolute;
+            top: 24px; right: 24px;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--accent-indigo);
+            box-shadow: 0 0 10px rgba(129, 140, 248, 0.5);
+        }
+        .message-avatar {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .message-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+        .message-email {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .message-subject {
+            font-size: 0.85rem;
+            color: var(--accent-indigo);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+        .message-body {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-top: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .chart-bar {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .chart-bar:hover {
+            transform: scaleY(1.05);
+        }
+        .chart-bar-fill {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            border-radius: 8px 8px 0 0;
+            transition: height 1s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .chart-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: rgba(12, 12, 24, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
+        .chart-bar:hover .chart-tooltip {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .login-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.2;
+            animation: orbFloat 10s ease-in-out infinite;
+        }
+        .input-glow {
+            position: relative;
+        }
+        .input-glow input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 16px 20px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .input-glow input:focus {
+            border-color: rgba(129, 140, 248, 0.5);
+            box-shadow: 0 0 30px rgba(129, 140, 248, 0.15), inset 0 0 20px rgba(129, 140, 248, 0.05);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .input-glow label {
+            position: absolute;
+            left: 20px; top: 16px;
+            color: var(--text-muted);
+            pointer-events: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        .input-glow input:focus + label,
+        .input-glow input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 12px;
+            font-size: 0.75rem;
+            color: var(--accent-indigo);
+            background: var(--bg);
+            padding: 0 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 100px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+        }
+        .btn-primary:active {
+            transform: translateY(0) scale(0.98);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            pointer-events: none;
+        }
+        .toast {
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid;
+            transform: translateX(100px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            pointer-events: all;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast-success {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+        .toast-error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .loading-pulse {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #818cf8, #fbbf24);
+            animation: pulseScale 1.5s ease-in-out infinite;
+        }
+        @keyframes pulseScale {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(0.8); opacity: 0.5; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: rgba(129, 140, 248, 0.3); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(129, 140, 248, 0.5); }
+
+        ::selection { background: rgba(129, 140, 248, 0.3); color: white; }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="bg-mesh">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div id="app" class="relative z-10">
+        <!-- LOGIN SCREEN -->
+        <div id="login-screen" class="min-h-screen flex items-center justify-center p-6">
+            <div class="glass-card w-full max-w-md p-10 relative overflow-hidden" style="background: rgba(10,10,18,0.9);">
+                <div class="login-orb" style="width: 200px; height: 200px; background: #818cf8; top: -50px; right: -50px;"></div>
+                <div class="login-orb" style="width: 150px; height: 150px; background: #fbbf24; bottom: -30px; left: -30px; animation-delay: -5s;"></div>
+
+                <div class="text-center mb-10 relative z-10">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-indigo-500 to-amber-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                        <span class="font-display text-2xl font-bold text-white">DA</span>
+                    </div>
+                    <h1 class="font-display text-2xl font-bold gradient-text mb-2">Admin Dashboard</h1>
+                    <p class="text-white/40 text-sm">Secure access required</p>
+                </div>
+
+                <form id="login-form" class="space-y-6 relative z-10">
+                    <div class="input-glow">
+                        <input type="text" id="username" placeholder=" " required autocomplete="off">
+                        <label for="username">Username</label>
+                    </div>
+                    <div class="input-glow">
+                        <input type="password" id="password" placeholder=" " required>
+                        <label for="password">Password</label>
+                    </div>
+                    <button type="submit" class="btn-primary w-full mt-8 flex items-center justify-center gap-2" id="login-btn">
+                        <span>Sign In</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </form>
+
+                <p id="login-error" class="text-red-400 text-sm text-center mt-6 hidden flex items-center justify-center gap-2">
+                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                    <span></span>
+                </p>
+            </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="dashboard" class="hidden min-h-screen">
+            <!-- Header -->
+            <header class="glass-card mx-6 mt-6 px-8 py-5 flex justify-between items-center sticky top-4 z-50">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-amber-500 flex items-center justify-center">
+                        <span class="font-display text-sm font-bold text-white">DA</span>
+                    </div>
+                    <div>
+                        <h1 class="font-display text-lg font-bold">Dashboard</h1>
+                        <p class="text-white/40 text-xs">Welcome back, <span id="admin-name">Admin</span></p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="refreshAll()" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-indigo-500/30 transition-all text-white/60 hover:text-indigo-400" title="Refresh Data">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="logout()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/30 transition-all text-white/60 hover:text-red-400 text-sm font-medium">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-card stat-card p-6 reveal-up" data-delay="0">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="stat-icon bg-indigo-500/10 text-indigo-400">
+                                <i data-lucide="mail" class="w-5 h-5"></i>
+                            </div>
+                            <span class="stat-trend trend-up flex items-center gap-1">
+                                <i data-lucide="trending-up" class="w-3 h-3"></i>
+                                <span>Live</span>
+                            </span>
+                        </div>
+                        <div class="stat-number gradient-text" id="stat-messages">0</div>
+                        <div class="stat-label mt-1">Total Messages</div>
+                    </div>
+
+                    <div class="glass-card stat-card p-6 reveal-up" data-delay="1">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="stat-icon bg-amber-500/10 text-amber-400">
+                                <i data-lucide="mail-open" class="w-5 h-5"></i>
+                            </div>
+                            <span class="stat-trend trend-up flex items-center gap-1">
+                                <i data-lucide="trending-up" class="w-3 h-3"></i>
+                                <span>New</span>
+                            </span>
+                        </div>
+                        <div class="stat-number" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" id="stat-unread">0</div>
+                        <div class="stat-label mt-1">Unread</div>
+                    </div>
+
+                    <div class="glass-card stat-card p-6 reveal-up" data-delay="2">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="stat-icon bg-emerald-500/10 text-emerald-400">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
+                            </div>
+                            <span class="stat-trend trend-up flex items-center gap-1">
+                                <i data-lucide="trending-up" class="w-3 h-3"></i>
+                                <span>Live</span>
+                            </span>
+                        </div>
+                        <div class="stat-number" style="background: linear-gradient(135deg, #4ade80, #22c55e); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" id="stat-visits">0</div>
+                        <div class="stat-label mt-1">Total Visits</div>
+                    </div>
+                </div>
+
+                <!-- Messages Section -->
+                <div class="glass-card reveal-up" data-delay="3">
+                    <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-lg font-semibold font-display">Contact Messages</h2>
+                            <p class="text-white/40 text-sm mt-1">Recent submissions from your portfolio</p>
+                        </div>
+                        <button onclick="loadMessages()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-indigo-500/30 transition-all text-white/60 hover:text-indigo-400 text-sm">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                            <span>Refresh</span>
+                        </button>
+                    </div>
+                    <div id="messages-list" class="max-h-[500px] overflow-y-auto">
+                        <div class="flex flex-col items-center justify-center py-16 text-white/30">
+                            <div class="loading-pulse mb-4"></div>
+                            <p class="text-sm">Loading messages...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Chart -->
+                <div class="glass-card p-6 reveal-up" data-delay="4">
+                    <div class="mb-6">
+                        <h2 class="text-lg font-semibold font-display">Visits Analytics</h2>
+                        <p class="text-white/40 text-sm mt-1">Last 7 days traffic overview</p>
+                    </div>
+                    <div id="visits-chart" class="h-56 flex items-end gap-3 px-2">
+                        <div class="text-center w-full text-white/30 py-12 flex flex-col items-center gap-3">
+                            <div class="loading-pulse"></div>
+                            <p>Loading analytics...</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-between mt-4 px-2 text-xs text-white/30" id="chart-labels"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        const API_URL = window.location.origin + '/api';
+        let authToken = localStorage.getItem('admin_token');
+
+        // Check auth
+        if (authToken) {
+            showDashboard();
+            loadDashboard();
+        }
+
+        // Login form
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('login-btn');
+            const errorEl = document.getElementById('login-error');
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="animate-pulse">Authenticating...</span>';
+            errorEl.classList.add('hidden');
+
+            try {
+                const res = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    authToken = data.token;
+                    localStorage.setItem('admin_token', authToken);
+
+                    // Animate transition
+                    gsap.to('#login-screen', {
+                        opacity: 0,
+                        y: -30,
+                        duration: 0.4,
+                        ease: 'power2.in',
+                        onComplete: () => {
+                            showDashboard();
+                            loadDashboard();
+                            animateEntrance();
+                        }
+                    });
+                    showToast('Welcome back, ' + data.username + '!', 'success');
+                } else {
+                    errorEl.querySelector('span').textContent = data.error || 'Login failed';
+                    errorEl.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>Sign In</span><i data-lucide="arrow-right" class="w-4 h-4"></i>';
+                    lucide.createIcons();
+
+                    // Shake animation
+                    gsap.to('#login-screen > .glass-card', {
+                        x: [-10, 10, -10, 10, 0],
+                        duration: 0.4,
+                        ease: 'power2.out'
+                    });
+                }
+            } catch (err) {
+                errorEl.querySelector('span').textContent = 'Network error. Please try again.';
+                errorEl.classList.remove('hidden');
+                btn.disabled = false;
+                btn.innerHTML = '<span>Sign In</span><i data-lucide="arrow-right" class="w-4 h-4"></i>';
+                lucide.createIcons();
+            }
+        });
+
+        function showDashboard() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function logout() {
+            localStorage.removeItem('admin_token');
+            authToken = null;
+            location.reload();
+        }
+
+        async function refreshAll() {
+            showToast('Refreshing data...', 'success');
+            await loadDashboard();
+            showToast('Data refreshed!', 'success');
+        }
+
+        async function loadDashboard() {
+            await Promise.all([
+                loadMessages(),
+                loadAnalytics()
+            ]);
+        }
+
+        async function loadMessages() {
+            const container = document.getElementById('messages-list');
+
+            try {
+                const res = await fetch(`${API_URL}/messages`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                const data = await res.json();
+
+                if (!data.success) {
+                    if (res.status === 401) {
+                        logout();
+                        return;
+                    }
+                    throw new Error(data.error);
+                }
+
+                document.getElementById('stat-messages').textContent = data.count;
+                const unread = data.messages.filter(m => !m.read).length;
+                document.getElementById('stat-unread').textContent = unread;
+
+                renderMessages(data.messages);
+
+            } catch (err) {
+                console.error('Load messages error:', err);
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-16 text-white/30">
+                        <i data-lucide="alert-circle" class="w-10 h-10 mb-3"></i>
+                        <p class="text-sm">Failed to load messages</p>
+                        <button onclick="loadMessages()" class="mt-4 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm transition-all">Retry</button>
+                    </div>
+                `;
+                lucide.createIcons();
+                showToast('Failed to load messages', 'error');
+            }
+        }
+
+        function renderMessages(messages) {
+            const container = document.getElementById('messages-list');
+
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-16 text-white/30">
+                        <div class="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-4">
+                            <i data-lucide="inbox" class="w-8 h-8 opacity-50"></i>
+                        </div>
+                        <p class="text-sm">No messages yet</p>
+                        <p class="text-xs mt-1 text-white/20">When someone contacts you, it will appear here</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = messages.map((msg, index) => {
+                const initials = msg.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const colors = ['bg-indigo-500/20 text-indigo-400', 'bg-amber-500/20 text-amber-400', 'bg-emerald-500/20 text-emerald-400', 'bg-rose-500/20 text-rose-400', 'bg-violet-500/20 text-violet-400'];
+                const colorClass = colors[index % colors.length];
+
+                return `
+                    <div class="message-card ${msg.read ? '' : 'unread'} flex gap-4" style="animation-delay: ${index * 0.05}s">
+                        <div class="message-avatar ${colorClass}">${initials}</div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-start gap-4">
+                                <div class="min-w-0">
+                                    <div class="message-name">${escapeHtml(msg.name)}</div>
+                                    <div class="message-email">${escapeHtml(msg.email)}</div>
+                                </div>
+                                <div class="message-time">${formatDate(msg.createdAt)}</div>
+                            </div>
+                            <div class="message-subject">${escapeHtml(msg.subject)}</div>
+                            <div class="message-body">${escapeHtml(msg.message)}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        async function loadAnalytics() {
+            try {
+                const res = await fetch(`${API_URL}/analytics`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                const data = await res.json();
+
+                if (!data.success) {
+                    if (res.status === 401) {
+                        logout();
+                        return;
+                    }
+                    throw new Error(data.error);
+                }
+
+                document.getElementById('stat-visits').textContent = data.stats.totalVisits;
+                renderVisitsChart(data.visitsByDate);
+
+            } catch (err) {
+                console.error('Load analytics error:', err);
+                document.getElementById('visits-chart').innerHTML = `
+                    <div class="text-center w-full text-white/30 py-12 flex flex-col items-center gap-3">
+                        <i data-lucide="bar-chart-2" class="w-8 h-8"></i>
+                        <p>Failed to load analytics</p>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+        }
+
+        function renderVisitsChart(visitsByDate) {
+            const container = document.getElementById('visits-chart');
+            const labelsContainer = document.getElementById('chart-labels');
+            const dates = Object.keys(visitsByDate).sort();
+
+            if (dates.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center w-full text-white/30 py-12 flex flex-col items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center">
+                            <i data-lucide="bar-chart-2" class="w-6 h-6 opacity-50"></i>
+                        </div>
+                        <p>No visit data yet</p>
+                        <p class="text-xs text-white/20">Visitors will appear here once they start coming</p>
+                    </div>
+                `;
+                labelsContainer.innerHTML = '';
+                lucide.createIcons();
+                return;
+            }
+
+            const maxVisits = Math.max(...Object.values(visitsByDate), 1);
+            const totalDays = 7;
+
+            // Fill missing days with 0
+            const filledData = [];
+            const today = new Date();
+            for (let i = totalDays - 1; i >= 0; i--) {
+                const d = new Date(today);
+                d.setDate(d.getDate() - i);
+                const dateStr = d.toISOString().split('T')[0];
+                const dayName = d.toLocaleDateString('en', { weekday: 'short' });
+                const count = visitsByDate[dateStr] || 0;
+                filledData.push({ date: dateStr, day: dayName, count });
+            }
+
+            const maxCount = Math.max(...filledData.map(d => d.count), 1);
+
+            container.innerHTML = filledData.map((d, i) => {
+                const height = (d.count / maxCount) * 100;
+                const isToday = i === totalDays - 1;
+                const barColor = isToday 
+                    ? 'linear-gradient(to top, rgba(129,140,248,0.6), rgba(251,191,36,0.8))'
+                    : 'linear-gradient(to top, rgba(129,140,248,0.3), rgba(129,140,248,0.5))';
+
+                return `
+                    <div class="chart-bar flex-1 flex flex-col items-center gap-2" style="height: 100%;">
+                        <div class="relative w-full flex-1 flex items-end" style="min-height: 40px;">
+                            <div class="chart-tooltip">${d.count} visits</div>
+                            <div class="w-full rounded-t-lg" style="height: ${Math.max(height, 4)}%; background: ${barColor}; transition: height 0.8s cubic-bezier(0.23, 1, 0.32, 1) ${i * 0.1}s;"></div>
+                        </div>
+                        <span class="text-white/40 text-xs font-medium ${isToday ? 'text-indigo-400' : ''}">${d.day}</span>
+                    </div>
+                `;
+            }).join('');
+
+            labelsContainer.innerHTML = '';
+        }
+
+        function animateEntrance() {
+            gsap.to('.reveal-up', {
+                opacity: 1,
+                y: 0,
+                duration: 0.7,
+                stagger: 0.1,
+                ease: 'power3.out',
+                delay: 0.2
+            });
+            gsap.to('.reveal-scale', {
+                opacity: 1,
+                scale: 1,
+                duration: 0.6,
+                stagger: 0.08,
+                ease: 'back.out(1.4)',
+                delay: 0.4
+            });
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = 'toast toast-' + type;
+            toast.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    ${type === 'success' 
+                        ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>' 
+                        : '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>'}
+                </svg>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            if (minutes < 1) return 'Just now';
+            if (minutes < 60) return `${minutes}m ago`;
+            if (hours < 24) return `${hours}h ago`;
+            if (days < 7) return `${days}d ago`;
+
+            return date.toLocaleDateString('en', { 
+                month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+            });
+        }
+
+        // Init icons on load
+        lucide.createIcons();
+    </script>
+</body>
+</html>
