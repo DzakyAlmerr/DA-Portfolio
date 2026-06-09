@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -17,7 +18,6 @@ async function connectToDatabase() {
   return { client, db };
 }
 
-// Helper: parse body di Vercel
 async function parseBody(req) {
   if (req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body)) {
     return req.body;
@@ -26,11 +26,7 @@ async function parseBody(req) {
     let data = '';
     req.on('data', chunk => data += chunk);
     req.on('end', () => {
-      try {
-        resolve(JSON.parse(data));
-      } catch {
-        resolve({});
-      }
+      try { resolve(JSON.parse(data)); } catch { resolve({}); }
     });
     req.on('error', reject);
   });
