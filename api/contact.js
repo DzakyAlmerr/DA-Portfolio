@@ -31,10 +31,6 @@ async function parseBody(req) {
   });
 }
 
-// ... di dalam handler:
-const body = await parseBody(req);
-const { name, email, subject, message } = body;
-
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
