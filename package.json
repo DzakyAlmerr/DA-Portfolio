@@ -2,7 +2,6 @@
   "name": "dzaky-almer-portfolio",
   "version": "1.0.0",
   "description": "Portfolio backend with MongoDB Atlas",
-  "type": "commonjs",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.6.1",
