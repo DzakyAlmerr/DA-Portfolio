@@ -6,7 +6,11 @@
       "dest": "/api/$1"
     },
     {
-      "src": "/(admin.html|index.html|shared.css|shared.js|network-dashboard.html|portfolio.html|school-website.html|smart-gate.html)",
+      "src": "/Projects/(.*)",
+      "dest": "/Projects/$1"
+    },
+    {
+      "src": "/(.*\\.(html|css|js|png|jpg|jpeg|gif|svg|ico|webp|mp4|webm))",
       "dest": "/$1"
     },
     {
