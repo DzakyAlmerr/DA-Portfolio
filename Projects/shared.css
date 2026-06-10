@@ -1709,3 +1709,30 @@ footer { border-color: var(--th-footer) !important; }
 [data-theme="light"] .back-to-portfolio svg {
   color: inherit !important;
 }
+
+
+/* ============================================
+   HAMBURGER BUTTON ANIMATIONS
+   ============================================ */
+
+/* Fade in on page load (project pages entrance) */
+.mobile-menu-btn {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.85);
+    transition: opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.mobile-menu-btn.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Fade out before page exit */
+.mobile-menu-btn.is-exiting {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.85);
+    transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+}
