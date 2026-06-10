@@ -31,6 +31,16 @@ function initLoadingScreen() {
                 loading.classList.add('hidden');
                 setTimeout(() => {
                     loading.style.display = 'none';
+
+                    // Fade in hamburger button on mobile
+                    const mobileBtn = document.getElementById('mobile-menu-btn');
+                    if (mobileBtn && window.innerWidth <= 768) {
+                        gsap.fromTo(mobileBtn, 
+                            { opacity: 0, y: -12, scale: 0.85 },
+                            { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'power3.out', delay: 0.1 }
+                        );
+                    }
+
                       setTimeout(() => {
                         if (window.ScrollTrigger) {
                             ScrollTrigger.getAll().forEach(t => t.kill());
@@ -660,6 +670,7 @@ function initPageTransition() {
     const sidebar = document.getElementById('sidebar');
     const scrollBar = document.getElementById('scroll-progress');
     const loading = document.getElementById('loading');
+    const mobileBtn = document.getElementById('mobile-menu-btn');
     if (!main) return;
 
     function runEntrance() {
@@ -715,17 +726,28 @@ function initPageTransition() {
                     onComplete: () => { window.location.assign(href); }
                 });
 
+                // Fade out hamburger button on mobile
+                if (mobileBtn && window.innerWidth <= 768) {
+                    tl.to(mobileBtn, {
+                        opacity: 0,
+                        y: -12,
+                        scale: 0.85,
+                        duration: 0.3,
+                        ease: 'power3.in'
+                    }, 0);
+                }
+
                 if (window.innerWidth > 768 && sidebar) {
                     tl.fromTo(sidebar,
                         { x: 0, opacity: 1 },
                         { x: '-100vw', opacity: 0, duration: 0.5, ease: 'power3.in' },
-                        0
+                        0.1
                     );
                 }
                 tl.fromTo(main,
                     { x: 0, opacity: 1 },
                     { x: '100vw', opacity: 0, duration: 0.5, ease: 'power3.in' },
-                    0
+                    0.15
                 );
             }
         });
