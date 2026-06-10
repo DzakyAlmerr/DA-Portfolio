@@ -711,6 +711,21 @@ function initPageTransition() {
                 sessionStorage.setItem('pageTransition', 'to-index');
                 if (scrollBar) scrollBar.style.opacity = '0';
 
+                // GSAP fade out hamburger button (mobile compatible)
+                const mobileBtn = document.getElementById('mobile-menu-btn');
+                if (mobileBtn) {
+                    gsap.to(mobileBtn, {
+                        opacity: 0,
+                        y: -10,
+                        scale: 0.9,
+                        duration: 0.3,
+                        ease: 'power2.in',
+                        onComplete: () => {
+                            mobileBtn.style.visibility = 'hidden';
+                        }
+                    });
+                }
+
                 const tl = gsap.timeline({
                     onComplete: () => { window.location.assign(href); }
                 });
@@ -719,13 +734,13 @@ function initPageTransition() {
                     tl.fromTo(sidebar,
                         { x: 0, opacity: 1 },
                         { x: '-100vw', opacity: 0, duration: 0.5, ease: 'power3.in' },
-                        0
+                        0.1.1
                     );
                 }
                 tl.fromTo(main,
                     { x: 0, opacity: 1 },
                     { x: '100vw', opacity: 0, duration: 0.5, ease: 'power3.in' },
-                    0
+                    0.15
                 );
             }
         });
