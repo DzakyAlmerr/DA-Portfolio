@@ -629,11 +629,18 @@
             align-items: center;
             justify-content: center; cursor: pointer;
             color: white;
-            transition: all 0.3s;
+            transition: all 0.3s, opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 1;
+            transform: translateY(0) scale(1);
         }
         .mobile-menu-btn:hover {
             background: rgba(255, 255, 255, 0.05);
             transform: scale(1.05);
+        }
+        .mobile-menu-btn.fade-out {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.9);
+            pointer-events: none;
         }
 
         /* Tablet: same as collapsed - only toggle */
@@ -4145,10 +4152,16 @@ const CanvasObserver = {
                         onComplete: () => { window.location.assign(href); }
                     });
 
-                    if (window.innerWidth > 768 && sidebar) {
-                        tl.to(sidebar, { x: '-100vw', opacity: 0, duration: 0.5, ease: 'power3.in' }, 0);
+                    // Fade out hamburger button first (smooth)
+                    const mobileBtn = document.getElementById('mobile-menu-btn');
+                    if (mobileBtn) {
+                        tl.to(mobileBtn, { opacity: 0, y: -10, scale: 0.9, duration: 0.3, ease: 'power2.in' }, 0);
                     }
-                    tl.to(main, { x: '100vw', opacity: 0, duration: 0.5, ease: 'power3.in' }, 0);
+
+                    if (window.innerWidth > 768 && sidebar) {
+                        tl.to(sidebar, { x: '-100vw', opacity: 0, duration: 0.5, ease: 'power3.in' }, 0.1);
+                    }
+                    tl.to(main, { x: '100vw', opacity: 0, duration: 0.5, ease: 'power3.in' }, 0.15);
                 });
             });
         })();
