@@ -1212,7 +1212,9 @@
   clip-path: circle(150% at var(--ox, 130px) var(--oy, 50%));
 }
 
-/* Toggle Switch */
+/* ============================================
+   SUN/MOON TOGGLE — Uiverse Inspired Design
+   ============================================ */
 .theme-toggle-wrapper {
   padding: 0 14px;
   margin-bottom: 12px;
@@ -1241,53 +1243,260 @@
   border-color: rgba(129, 140, 248, 0.2);
   color: var(--th-text);
 }
+
+/* ===== TRACK ===== */
 .theme-toggle-track {
   position: relative;
-  width: 40px;
-  height: 22px;
-  border-radius: 11px;
-  background: rgba(129, 140, 248, 0.15);
-  border: 1px solid rgba(129, 140, 248, 0.25);
-  transition: all 0.3s ease;
+  width: 56px;
+  height: 30px;
+  border-radius: 15px;
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  border: 1px solid rgba(129, 140, 248, 0.15);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 2px 10px rgba(0,0,0,0.4),
+    0 1px 3px rgba(0,0,0,0.3);
 }
-[data-theme="light"] .theme-toggle-track {
-  background: rgba(251, 191, 36, 0.15);
-  border-color: rgba(251, 191, 36, 0.25);
+
+/* Stars in dark mode */
+.theme-toggle-track .stars {
+  position: absolute;
+  inset: 0;
+  transition: all 0.5s ease;
 }
+.theme-toggle-track .stars::before,
+.theme-toggle-track .stars::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  transition: all 0.5s ease;
+}
+.theme-toggle-track .stars::before {
+  width: 2px;
+  height: 2px;
+  top: 6px;
+  left: 8px;
+  box-shadow: 
+    10px 4px 0 0 white,
+    20px 8px 0 0 white,
+    6px 14px 0 0 white,
+    16px 16px 0 0 white,
+    26px 6px 0 0 white,
+    14px 10px 0 0 rgba(255,255,255,0.5);
+}
+.theme-toggle-track .stars::after {
+  width: 1.5px;
+  height: 1.5px;
+  top: 10px;
+  left: 18px;
+  box-shadow: 
+    8px 8px 0 0 rgba(255,255,255,0.7),
+    4px 16px 0 0 rgba(255,255,255,0.4);
+}
+
+/* Clouds in light mode (hidden by default) */
+.theme-toggle-track .clouds {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s ease;
+}
+.theme-toggle-track .clouds::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 8px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 4px;
+  top: 6px;
+  left: 6px;
+  box-shadow: 
+    14px 4px 0 -2px rgba(255,255,255,0.6),
+    24px 8px 0 -3px rgba(255,255,255,0.4);
+  transition: all 0.5s ease;
+}
+
+/* ===== THUMB ===== */
 .theme-toggle-thumb {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #818cf8, #fbbf24);
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  box-shadow: 0 2px 8px rgba(129,140,248,0.4);
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  box-shadow: 
+    0 2px 8px rgba(0,0,0,0.4),
+    inset -2px -2px 4px rgba(0,0,0,0.1),
+    inset 2px 2px 4px rgba(255,255,255,0.4);
+  z-index: 2;
 }
-.theme-toggle-thumb svg {
-  width: 10px;
-  height: 10px;
-  color: #050508;
-  transition: opacity 0.3s ease;
+
+/* Moon craters */
+.theme-toggle-thumb .craters {
   position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transition: all 0.4s ease;
 }
-.theme-icon-dark { opacity: 1; }
-.theme-icon-light { opacity: 0; }
+.theme-toggle-thumb .craters::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+  box-shadow: 
+    7px 3px 0 0 rgba(0,0,0,0.06),
+    4px 9px 0 0 rgba(0,0,0,0.05);
+  transition: all 0.4s ease;
+}
+
+/* Sun rays (hidden in dark mode) */
+.theme-toggle-thumb .rays {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.3) rotate(0deg);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.theme-toggle-thumb .rays::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: 
+    linear-gradient(0deg, transparent 42%, rgba(251,191,36,0.25) 42%, rgba(251,191,36,0.25) 58%, transparent 58%),
+    linear-gradient(45deg, transparent 42%, rgba(251,191,36,0.25) 42%, rgba(251,191,36,0.25) 58%, transparent 58%),
+    linear-gradient(90deg, transparent 42%, rgba(251,191,36,0.25) 42%, rgba(251,191,36,0.25) 58%, transparent 58%),
+    linear-gradient(135deg, transparent 42%, rgba(251,191,36,0.25) 42%, rgba(251,191,36,0.25) 58%, transparent 58%);
+}
+
+/* Icon inside thumb */
+.theme-toggle-thumb .icon-svg {
+  width: 14px;
+  height: 14px;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: absolute;
+  z-index: 3;
+}
+.theme-icon-dark { 
+  opacity: 1; 
+  color: #475569;
+  transform: scale(1) rotate(0deg);
+}
+.theme-icon-light { 
+  opacity: 0; 
+  color: #fff;
+  transform: scale(0.3) rotate(-90deg);
+}
+
+/* ===== LIGHT MODE ===== */
+[data-theme="light"] .theme-toggle-track {
+  background: linear-gradient(180deg, #60a5fa 0%, #93c5fd 50%, #bfdbfe 100%);
+  border-color: rgba(96, 165, 250, 0.2);
+  box-shadow: 
+    inset 0 2px 10px rgba(0,0,0,0.1),
+    0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Hide stars, show clouds in light mode */
+[data-theme="light"] .theme-toggle-track .stars {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+[data-theme="light"] .theme-toggle-track .clouds {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Sun position & style */
 [data-theme="light"] .theme-toggle-thumb {
-  transform: translateX(18px);
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  box-shadow: 0 2px 8px rgba(251,191,36,0.4);
+  transform: translateX(26px);
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+  box-shadow: 
+    0 2px 10px rgba(251, 191, 36, 0.5),
+    inset -2px -2px 4px rgba(0,0,0,0.1),
+    inset 2px 2px 4px rgba(255,255,255,0.5);
 }
-[data-theme="light"] .theme-icon-dark { opacity: 0; }
-[data-theme="light"] .theme-icon-light { opacity: 1; }
+
+/* Hide craters, show rays in light mode */
+[data-theme="light"] .theme-toggle-thumb .craters {
+  opacity: 0;
+  transform: scale(0.5);
+}
+[data-theme="light"] .theme-toggle-thumb .rays {
+  opacity: 1;
+  transform: scale(1) rotate(45deg);
+}
+
+/* Icon swap */
+[data-theme="light"] .theme-icon-dark { 
+  opacity: 0; 
+  transform: scale(0.3) rotate(90deg);
+}
+[data-theme="light"] .theme-icon-light { 
+  opacity: 1; 
+  transform: scale(1) rotate(0deg);
+}
+
+/* Label */
 .theme-toggle-label {
   transition: color 0.3s ease;
   user-select: none;
+}
+
+/* Hover glow effects */
+.theme-toggle:hover .theme-toggle-track {
+  box-shadow: 
+    inset 0 2px 10px rgba(0,0,0,0.4), 
+    0 0 16px rgba(129, 140, 248, 0.15);
+}
+[data-theme="light"] .theme-toggle:hover .theme-toggle-track {
+  box-shadow: 
+    inset 0 2px 10px rgba(0,0,0,0.1), 
+    0 0 16px rgba(251, 191, 36, 0.15);
+}
+
+/* Click animation */
+.theme-toggle:active .theme-toggle-thumb {
+  transform: scale(0.92);
+}
+[data-theme="light"] .theme-toggle:active .theme-toggle-thumb {
+  transform: translateX(26px) scale(0.92);
+}
+
+/* Shooting star animation in dark mode */
+@keyframes shootingStar {
+  0% { transform: translateX(0) translateY(0); opacity: 1; }
+  100% { transform: translateX(20px) translateY(10px); opacity: 0; }
+}
+.theme-toggle-track .shooting-star {
+  position: absolute;
+  width: 8px;
+  height: 1px;
+  background: linear-gradient(90deg, white, transparent);
+  top: 8px;
+  left: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.theme-toggle:hover .theme-toggle-track .shooting-star {
+  animation: shootingStar 0.8s ease-out forwards;
+}
+[data-theme="light"] .theme-toggle-track .shooting-star {
+  display: none;
 }
 
 /* Light Mode Overrides */
@@ -1804,9 +2013,14 @@ footer { border-color: var(--th-footer) !important; }
           <div class="theme-toggle-wrapper">
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
               <span class="theme-toggle-track">
+                <span class="stars"></span>
+                <span class="clouds"></span>
+                <span class="shooting-star"></span>
                 <span class="theme-toggle-thumb">
-                  <i data-lucide="moon" class="w-2.5 h-2.5 theme-icon-dark"></i>
-                  <i data-lucide="sun" class="w-2.5 h-2.5 theme-icon-light"></i>
+                  <span class="craters"></span>
+                  <span class="rays"></span>
+                  <svg class="icon-svg theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                  <svg class="icon-svg theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
                 </span>
               </span>
               <span class="theme-toggle-label">Dark</span>
