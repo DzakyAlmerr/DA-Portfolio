@@ -715,17 +715,29 @@ function initPageTransition() {
                     onComplete: () => { window.location.assign(href); }
                 });
 
+                // Fade out hamburger button on mobile
+                const mobileBtn = document.getElementById('mobile-menu-btn');
+                if (mobileBtn && window.innerWidth <= 768) {
+                    tl.to(mobileBtn, {
+                        opacity: 0,
+                        y: -12,
+                        scale: 0.85,
+                        duration: 0.3,
+                        ease: 'power3.in'
+                    }, 0);
+                }
+
                 if (window.innerWidth > 768 && sidebar) {
                     tl.fromTo(sidebar,
                         { x: 0, opacity: 1 },
                         { x: '-100vw', opacity: 0, duration: 0.5, ease: 'power3.in' },
-                        0
+                        0.1
                     );
                 }
                 tl.fromTo(main,
                     { x: 0, opacity: 1 },
                     { x: '100vw', opacity: 0, duration: 0.5, ease: 'power3.in' },
-                    0
+                    0.15
                 );
             }
         });
