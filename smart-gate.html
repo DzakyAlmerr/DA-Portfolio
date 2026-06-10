@@ -716,17 +716,40 @@
 
 
 <script>
-// Mobile hamburger fade fix - inline (reliable, no cache issues)
+// Mobile hamburger fade fix - v2 (fade in + fade out)
 (function() {
     const mobileBtn = document.getElementById('mobile-menu-btn');
     if (!mobileBtn) return;
 
+    // ===== FADE IN on page load (entrance animation) =====
+    // Set initial state: hidden
+    mobileBtn.style.opacity = '0';
+    mobileBtn.style.transform = 'translateY(-10px) scale(0.9)';
+
+    // Fade in after a short delay (let page settle first)
+    setTimeout(function() {
+        if (typeof gsap !== 'undefined') {
+            gsap.to(mobileBtn, {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.5,
+                ease: 'power2.out'
+            });
+        } else {
+            mobileBtn.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            mobileBtn.style.opacity = '1';
+            mobileBtn.style.transform = 'translateY(0) scale(1)';
+        }
+    }, 300); // 300ms delay after load
+
+    // ===== FADE OUT on click back to portfolio =====
     // Find all links that go back to portfolio/index
     const backLinks = document.querySelectorAll('a[href*="index.html"], a[href="../"], a[href="/"]');
 
     backLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Only on mobile
+            // Only on mobile (where hamburger is visible)
             if (window.innerWidth > 768) return;
 
             e.preventDefault();
@@ -746,7 +769,7 @@
                 });
             } else {
                 // Fallback if GSAP not loaded
-                mobileBtn.style.transition = 'all 0.3s ease';
+                mobileBtn.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                 mobileBtn.style.opacity = '0';
                 mobileBtn.style.transform = 'translateY(-10px) scale(0.9)';
                 setTimeout(function() {
