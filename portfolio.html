@@ -118,9 +118,8 @@
         .sidebar.collapsed ~ .main-content { margin-left: 48px; }
         .sidebar-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 998; opacity: 0; pointer-events: none; visibility: hidden; transition: all 0.3s ease; }
         .sidebar-backdrop.active { opacity: 1; pointer-events: all; visibility: visible; }
-        .mobile-menu-btn { position: fixed; top: 20px; left: 20px; z-index: 999; width: 44px; height: 44px; border-radius: 12px; background: rgba(8, 8, 16, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); display: none; align-items: center; justify-content: center; cursor: pointer; color: white; transition: all 0.3s, opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); opacity: 1; transform: translateY(0) scale(1); }
+        .mobile-menu-btn { position: fixed; top: 20px; left: 20px; z-index: 999; width: 44px; height: 44px; border-radius: 12px; background: rgba(8, 8, 16, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); display: none; align-items: center; justify-content: center; cursor: pointer; color: white; transition: all 0.3s; will-change: transform, opacity; }
         .mobile-menu-btn:hover { background: rgba(255, 255, 255, 0.05); transform: scale(1.05); }
-        .mobile-menu-btn.fade-out { opacity: 0; transform: translateY(-10px) scale(0.9); pointer-events: none; }
         @media (max-width: 1024px) and (min-width: 769px) {
             .sidebar { width: 48px; }
             .sidebar .sidebar-header { padding: 20px 0; justify-content: center; min-height: 68px; }
