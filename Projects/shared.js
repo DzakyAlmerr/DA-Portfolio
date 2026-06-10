@@ -19,6 +19,13 @@ function initLoadingScreen() {
     const loading = document.querySelector('.project-loading');
     if (!loading) return;
 
+    // Hide hamburger button initially (will fade in after loading)
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    if (mobileBtn && window.innerWidth <= 768) {
+        mobileBtn.style.opacity = '0';
+        mobileBtn.style.transform = 'translateY(-12px) scale(0.85)';
+    }
+
     const bar = loading.querySelector('.project-loading-fill');
     let progress = 0;
 
@@ -33,12 +40,15 @@ function initLoadingScreen() {
                     loading.style.display = 'none';
 
                     // Fade in hamburger button on mobile
-                    const mobileBtn = document.getElementById('mobile-menu-btn');
                     if (mobileBtn && window.innerWidth <= 768) {
-                        gsap.fromTo(mobileBtn, 
-                            { opacity: 0, y: -12, scale: 0.85 },
-                            { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: 'power3.out', delay: 0.1 }
-                        );
+                        gsap.to(mobileBtn, {
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                            duration: 0.3,
+                            ease: 'power3.out',
+                            delay: 0.1
+                        });
                     }
 
                     setTimeout(() => {
