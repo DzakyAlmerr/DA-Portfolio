@@ -31,7 +31,17 @@ function initLoadingScreen() {
                 loading.classList.add('hidden');
                 setTimeout(() => {
                     loading.style.display = 'none';
-                      setTimeout(() => {
+
+                    // Fade in hamburger button on mobile
+                    const mobileBtn = document.getElementById('mobile-menu-btn');
+                    if (mobileBtn && window.innerWidth <= 768) {
+                        gsap.fromTo(mobileBtn, 
+                            { opacity: 0, y: -12, scale: 0.85 },
+                            { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: 'power3.out', delay: 0.1 }
+                        );
+                    }
+
+                    setTimeout(() => {
                         if (window.ScrollTrigger) {
                             ScrollTrigger.getAll().forEach(t => t.kill());
                             initScrollReveals();
