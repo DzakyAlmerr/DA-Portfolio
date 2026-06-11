@@ -2174,7 +2174,7 @@ footer { border-color: var(--th-footer) !important; }
 }
 .button.processing .state--processing span {
   opacity: 0;
-  animation: slideDown 0.8s ease forwards calc(var(--i) * 0.03s);
+  animation: slideDown 0.35s ease forwards calc(var(--i) * 0.02s);
 }
 
 /* Sent State */
@@ -2231,6 +2231,12 @@ footer { border-color: var(--th-footer) !important; }
   position: relative;
 }
 .state--default span:nth-child(4) {
+  margin-right: 5px;
+}
+.state--sent span:nth-child(7) {
+  margin-right: 5px;
+}
+.state--sent span:nth-child(11) {
   margin-right: 5px;
 }
 
@@ -4542,13 +4548,13 @@ const CanvasObserver = {
             btn.focus();
             btn.disabled = true;
 
-            // Step 2: Wait for plane animation (800ms), then show Processing
+            // Step 2: Switch to Processing quickly (300ms)
             setTimeout(() => {
                 btn.blur();
                 btn.classList.add('processing');
-            }, 800);
+            }, 300);
 
-            // Step 3: Send form after processing state is visible
+            // Step 3: Send form after brief processing visibility
             setTimeout(async () => {
                 try {
                     const res = await fetch('/api/contact', {
@@ -4598,7 +4604,7 @@ const CanvasObserver = {
                         }
                     }, 3000);
                 }
-            }, 1200); // Wait 1200ms total (800ms plane + 400ms processing visible)
+            }, 1000); // 300ms plane + 700ms processing visible
         });
 
 // Toast Helper
