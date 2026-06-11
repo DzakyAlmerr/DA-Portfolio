@@ -1872,249 +1872,6 @@ footer { border-color: var(--th-footer) !important; }
             color: #dc2626;
         }
 
-/* ============================================
-   UNIVERSE SEND BUTTON — Theme Adaptive
-   ============================================ */
-.uiverse-btn {
-  --primary: #818cf8;
-  --primary-dark: #6366f1;
-  --primary-light: #c7d2fe;
-  --text: #e2e8f0;
-  --bg: transparent;
-  --circle: rgba(129, 140, 248, 0.15);
-  --circle-hover: rgba(129, 140, 248, 0.25);
-  --outline: rgba(129, 140, 248, 0.4);
-  --shadow: rgba(129, 140, 248, 0.15);
-
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 56px;
-  border: none;
-  border-radius: 16px;
-  background: var(--bg);
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Outline spin effect */
-.uiverse-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  padding: 2px;
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    transparent 40%,
-    transparent 60%,
-    var(--primary) 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.6;
-  transition: opacity 0.4s ease;
-  animation: uiverseOutlineSpin 3s linear infinite;
-}
-
-@keyframes uiverseOutlineSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.uiverse-btn:hover::before {
-  opacity: 1;
-}
-
-.uiverse-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px var(--shadow);
-}
-
-.uiverse-btn:active {
-  transform: translateY(0) scale(0.98);
-}
-
-.uiverse-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  z-index: 2;
-}
-
-/* Circle background */
-.uiverse-circle {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--circle);
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  left: 16px;
-}
-
-.uiverse-btn:hover .uiverse-circle {
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-  left: 0;
-  background: var(--circle-hover);
-}
-
-/* Icon container */
-.uiverse-icon {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-}
-
-.uiverse-icon svg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  color: var(--primary);
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.uiverse-plane {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-
-.uiverse-check {
-  opacity: 0;
-  transform: rotate(-45deg) scale(0.3);
-}
-
-/* Text container */
-.uiverse-text,
-.uiverse-text-sent {
-  display: flex;
-  align-items: center;
-  gap: 1px;
-  z-index: 3;
-}
-
-.uiverse-text-sent {
-  position: absolute;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.uiverse-letter {
-  display: inline-block;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text);
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-/* Letter wave animation on hover */
-.uiverse-btn:hover .uiverse-letter {
-  animation: uiverseLetterWave 0.6s ease infinite;
-  animation-delay: calc(var(--i) * 0.05s);
-}
-
-@keyframes uiverseLetterWave {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-/* SENDING STATE */
-.uiverse-btn.sending .uiverse-plane {
-  animation: uiversePlaneFly 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
-@keyframes uiversePlaneFly {
-  0% { 
-    opacity: 1; 
-    transform: rotate(0deg) translate(0, 0) scale(1); 
-  }
-  20% { 
-    transform: rotate(-15deg) translate(-5px, 2px) scale(1.1); 
-  }
-  40% { 
-    opacity: 1; 
-    transform: rotate(45deg) translate(20px, -20px) scale(0.8); 
-  }
-  60% { 
-    opacity: 0.5; 
-    transform: rotate(45deg) translate(60px, -60px) scale(0.5); 
-  }
-  100% { 
-    opacity: 0; 
-    transform: rotate(45deg) translate(100px, -100px) scale(0.3); 
-  }
-}
-
-/* Contrail effect */
-.uiverse-btn.sending::after {
-  content: '';
-  position: absolute;
-  left: 28px;
-  top: 50%;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--primary), transparent);
-  border-radius: 2px;
-  animation: uiverseContrail 1s ease-out forwards;
-  z-index: 1;
-}
-
-@keyframes uiverseContrail {
-  0% { width: 0; opacity: 1; }
-  50% { width: 80px; opacity: 0.8; }
-  100% { width: 120px; opacity: 0; }
-}
-
-/* SENT STATE */
-.uiverse-btn.sent .uiverse-text {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-
-.uiverse-btn.sent .uiverse-text-sent {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.uiverse-btn.sent .uiverse-check {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-  transition-delay: 0.3s;
-}
-
-.uiverse-btn.sent .uiverse-circle {
-  background: rgba(34, 197, 94, 0.2);
-}
-
-.uiverse-btn.sent::before {
-  background: linear-gradient(
-    135deg,
-    #22c55e 0%,
-    transparent 40%,
-    transparent 60%,
-    #22c55e 100%
-  );
-}
-
-/* ============================================
-   LIGHT MODE ADAPTATION
-   ============================================ */
 [data-theme="light"] .uiverse-btn {
   --primary: #6366f1;
   --primary-dark: #4f46e5;
@@ -2140,9 +1897,6 @@ footer { border-color: var(--th-footer) !important; }
   );
 }
 
-/* ============================================
-   UNIVERSE SEND BUTTON — Marcelodolza (Adapted)
-   ============================================ */
 /* ============================================
    UNIVERSE SEND BUTTON — Marcelodolza (Theme Adaptive)
    ============================================ */
@@ -2401,16 +2155,29 @@ footer { border-color: var(--th-footer) !important; }
   }
 }
 
-/* States */
-.state {
-  padding-left: 29px;
-  z-index: 2;
+/* Processing State */
+.state--processing {
+  display: none;
+}
+.state--processing .icon svg {
+  animation: spinner 1s linear infinite;
+}
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.button.processing .state--default {
+  display: none;
+}
+.button.processing .state--processing {
   display: flex;
-  position: relative;
 }
-.state--default span:nth-child(4) {
-  margin-right: 5px;
+.button.processing .state--processing span {
+  opacity: 0;
+  animation: slideDown 0.8s ease forwards calc(var(--i) * 0.03s);
 }
+
+/* Sent State */
 .state--sent {
   display: none;
 }
@@ -2418,17 +2185,18 @@ footer { border-color: var(--th-footer) !important; }
   transform: scale(1.25);
   margin-right: 8px;
 }
-.button:focus .state--default {
-  position: absolute;
+.button.sent .state--default,
+.button.sent .state--processing {
+  display: none;
 }
-.button:focus .state--sent {
+.button.sent .state--sent {
   display: flex;
 }
-.button:focus .state--sent span {
+.button.sent .state--sent span {
   opacity: 0;
   animation: slideDown 0.8s ease forwards calc(var(--i) * 0.2s);
 }
-.button:focus .state--sent .icon svg {
+.button.sent .state--sent .icon svg {
   opacity: 0;
   animation: appear 1.2s ease forwards 0.8s;
 }
@@ -2453,6 +2221,43 @@ footer { border-color: var(--th-footer) !important; }
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* States */
+.state {
+  padding-left: 29px;
+  z-index: 2;
+  display: flex;
+  position: relative;
+}
+.state--default span:nth-child(4) {
+  margin-right: 5px;
+}
+
+/* ============================================
+   STATE VISIBILITY FIX — prevents all states showing at once
+   ============================================ */
+.button .state--default {
+  display: flex;
+}
+.button .state--processing {
+  display: none;
+}
+.button .state--sent {
+  display: none;
+}
+.button.processing .state--default {
+  display: none !important;
+}
+.button.processing .state--processing {
+  display: flex !important;
+}
+.button.sent .state--default,
+.button.sent .state--processing {
+  display: none !important;
+}
+.button.sent .state--sent {
+  display: flex !important;
 }
 
 /* ============================================
@@ -2488,35 +2293,12 @@ footer { border-color: var(--th-footer) !important; }
 [data-theme="light"] .state--default .icon:before {
   background: linear-gradient(to right, transparent, rgba(99, 102, 241, 0.4));
 }
-/* ============================================
-   LIGHT MODE ADAPTATION
-   ============================================ */
-[data-theme="light"] .button {
-  --primary: #6366f1;
-  --neutral-1: #f1f5f9;
-  --neutral-2: #e2e8f0;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0.5px 0.5px 1px rgba(0, 0, 0, 0.05),
-    0 10px 20px rgba(0, 0, 0, 0.1), 0 4px 5px 0px rgba(0, 0, 0, 0.03);
-}
-[data-theme="light"] .button:hover {
-  box-shadow: 0 0 1px 2px rgba(99, 102, 241, 0.2),
-    0 15px 30px rgba(0, 0, 0, 0.15), 0 10px 3px -3px rgba(0, 0, 0, 0.02);
-}
-[data-theme="light"] .button:after {
-  background: linear-gradient(var(--neutral-1), var(--neutral-2)) padding-box,
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.2))
-      border-box;
-}
-[data-theme="light"] .button::before {
-  background: linear-gradient(to top, var(--neutral-1), var(--neutral-2));
-}
-[data-theme="light"] .state--default .icon:before {
-  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.3));
-}
+
 
 </style>
 
+<base target="_blank">
+<base target="_blank">
 <base target="_blank">
 <base target="_blank">
 </head>
@@ -3427,6 +3209,8 @@ footer { border-color: var(--th-footer) !important; }
                             <textarea id="message" rows="5" placeholder=" " required></textarea>
                             <label for="message">Your Message</label>
                         </div>
+                        
+                    
                         <button type="submit" class="button" id="send-btn">
   <div class="outline"></div>
   <div class="state state--default">
@@ -3447,6 +3231,16 @@ footer { border-color: var(--th-footer) !important; }
       <span style="--i:0">S</span><span style="--i:1">e</span><span style="--i:2">n</span><span style="--i:3">d</span><span style="--i:4">M</span><span style="--i:5">e</span><span style="--i:6">s</span><span style="--i:7">s</span><span style="--i:8">a</span><span style="--i:9">g</span><span style="--i:10">e</span>
     </p>
   </div>
+  <div class="state state--processing">
+    <div class="icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+      </svg>
+    </div>
+    <p>
+      <span style="--i:0">P</span><span style="--i:1">r</span><span style="--i:2">o</span><span style="--i:3">c</span><span style="--i:4">e</span><span style="--i:5">s</span><span style="--i:6">s</span><span style="--i:7">i</span><span style="--i:8">n</span><span style="--i:9">g</span><span style="--i:10">.</span><span style="--i:11">.</span><span style="--i:12">.</span>
+    </p>
+  </div>
   <div class="state state--sent">
     <div class="icon">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="1em" width="1em" stroke-width="0.5px" stroke="black">
@@ -3457,7 +3251,7 @@ footer { border-color: var(--th-footer) !important; }
       </svg>
     </div>
     <p>
-      <span style="--i:5">S</span><span style="--i:6">e</span><span style="--i:7">n</span><span style="--i:8">t</span><span style="--i:9">!</span>
+      <span style="--i:5">M</span><span style="--i:6">e</span><span style="--i:7">s</span><span style="--i:8">s</span><span style="--i:9">a</span><span style="--i:10">g</span><span style="--i:11">e</span><span style="--i:12">S</span><span style="--i:13">e</span><span style="--i:14">n</span><span style="--i:15">t</span><span style="--i:16">✓</span>
     </p>
   </div>
 </button>
@@ -4744,46 +4538,67 @@ const CanvasObserver = {
                 return;
             }
 
-            // Trigger Uiverse button animation via focus
-            btn.disabled = true;
+            // Step 1: Trigger plane take-off animation
             btn.focus();
+            btn.disabled = true;
 
-            try {
-                const res = await fetch('/api/contact', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        name, 
-                        email, 
-                        subject: subject || 'No Subject', 
-                        message 
-                    })
-                });
-
-                const data = await res.json();
-
-                if (res.ok && data.success) {
-                    // Success: Confetti + toast
-                    const rect = btn.getBoundingClientRect();
-                    triggerConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
-
-                    showToast('Message sent successfully! I will get back to you soon.', 'success');
-                    form.reset();
-
-                    // Keep focus for sent state animation, then reset after 3s
-                    setTimeout(() => {
-                        btn.blur();
-                        btn.disabled = false;
-                    }, 3000);
-                } else {
-                    throw new Error(data.error || 'Failed to send message');
-                }
-            } catch (err) {
-                console.error('Contact form error:', err);
+            // Step 2: Wait for plane animation (800ms), then show Processing
+            setTimeout(() => {
                 btn.blur();
-                btn.disabled = false;
-                showToast(err.message || 'Network error. Please try again later.', 'error');
-            }
+                btn.classList.add('processing');
+            }, 800);
+
+            // Step 3: Send form after processing state is visible
+            setTimeout(async () => {
+                try {
+                    const res = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            name, 
+                            email, 
+                            subject: subject || 'No Subject', 
+                            message 
+                        })
+                    });
+
+                    const data = await res.json();
+
+                    if (res.ok && data.success) {
+                        // Step 4: Show Sent state + confetti
+                        btn.classList.remove('processing');
+                        btn.classList.add('sent');
+
+                        const rect = btn.getBoundingClientRect();
+                        triggerConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+                        showToast('Message sent successfully! I will get back to you soon.', 'success');
+                        form.reset();
+
+                        // Step 5: Reset after 3 seconds
+                        setTimeout(() => {
+                            btn.classList.remove('sent');
+                            btn.disabled = false;
+                        }, 3000);
+                    } else {
+                        throw new Error(data.error || 'Failed to send message');
+                    }
+                } catch (err) {
+                    console.error('Contact form error:', err);
+                    btn.classList.remove('processing');
+                    btn.blur();
+                    btn.disabled = false;
+                    showToast(err.message || 'Network error. Please try again later.', 'error');
+                } finally {
+                    // Safety: ensure no stray classes remain
+                    setTimeout(() => {
+                        if (!btn.classList.contains('sent')) {
+                            btn.classList.remove('processing');
+                            btn.disabled = false;
+                        }
+                    }, 3500);
+                }
+            }, 1200); // Wait 1200ms total (800ms plane + 400ms processing visible)
         });
 
 // Toast Helper
