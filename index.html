@@ -860,14 +860,107 @@
             background: rgba(129, 140, 248, 0.1); border-color: rgba(129, 140, 248, 0.3); color: #818cf8;
         }
 
-        .social-link {
-            width: 48px; height: 48px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6);
-            transition: all 0.4s; text-decoration: none;
+        /* ========== SOCIAL ICONS — Uiverse by PriyanshuGupta28 ========== */
+        .social-icons {
+            list-style: none;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 0;
+            padding: 0;
+            margin: 2.5rem 0 0 0;
         }
-        .social-link:hover {
-            border-color: rgba(129, 140, 248, 0.5); color: #818cf8;
-            transform: translateY(-4px); box-shadow: 0 10px 30px rgba(129, 140, 248, 0.2);
+        .social-icons .icon-content {
+            margin: 0 10px;
+            position: relative;
+        }
+        .social-icons .icon-content .tooltip {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 8px;
+            opacity: 0;
+            visibility: hidden;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .social-icons .icon-content:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            top: -50px;
+        }
+        .social-icons .icon-content a {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+        }
+        .social-icons .icon-content a:hover {
+            box-shadow: 3px 2px 45px 0px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+            border-color: transparent;
+        }
+        .social-icons .icon-content a svg {
+            position: relative;
+            z-index: 1;
+            width: 22px;
+            height: 22px;
+        }
+        .social-icons .icon-content a:hover {
+            color: white;
+        }
+        .social-icons .icon-content a .filled {
+            position: absolute;
+            top: auto;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background-color: #000;
+            transition: all 0.3s ease-in-out;
+            z-index: 0;
+        }
+        .social-icons .icon-content a:hover .filled {
+            height: 100%;
+        }
+        /* Instagram */
+        .social-icons .icon-content a[data-social="instagram"] .filled,
+        .social-icons .icon-content a[data-social="instagram"] ~ .tooltip {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+        /* WhatsApp */
+        .social-icons .icon-content a[data-social="whatsapp"] .filled,
+        .social-icons .icon-content a[data-social="whatsapp"] ~ .tooltip {
+            background-color: #25d366;
+        }
+        /* TikTok */
+        .social-icons .icon-content a[data-social="tiktok"] .filled,
+        .social-icons .icon-content a[data-social="tiktok"] ~ .tooltip {
+            background-color: #000000;
+        }
+        .social-icons .icon-content a[data-social="tiktok"]:hover {
+            color: #69c9d0;
+        }
+        /* Website */
+        .social-icons .icon-content a[data-social="website"] .filled,
+        .social-icons .icon-content a[data-social="website"] ~ .tooltip {
+            background: linear-gradient(135deg, #818cf8, #fbbf24);
         }
 
         .hero-title { font-size: clamp(2.5rem, 8vw, 6rem); line-height: 1.05; font-weight: 800; letter-spacing: -0.03em; }
@@ -1499,6 +1592,23 @@
   display: none;
 }
 
+/* Social icons light mode */
+[data-theme="light"] .social-icons .icon-content a {
+    color: rgba(15, 23, 42, 0.5);
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+[data-theme="light"] .social-icons .icon-content a:hover {
+    color: white;
+    box-shadow: 3px 2px 45px 0px rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .social-icons .icon-content a[data-social="tiktok"]:hover {
+    color: #69c9d0;
+}
+[data-theme="light"] .social-icons .icon-content .tooltip {
+    color: #fff;
+}
+
 /* Light Mode Overrides */
 body, .loading-screen {
   background: var(--th-bg) !important;
@@ -1561,14 +1671,7 @@ body, .loading-screen {
   border-color: rgba(129,140,248,0.3) !important;
   color: #818cf8 !important;
 }
-.social-link {
-  border-color: var(--th-social) !important;
-  color: var(--th-text-50) !important;
-}
-.social-link:hover {
-  border-color: rgba(129,140,248,0.5) !important;
-  color: #818cf8 !important;
-}
+
 footer { border-color: var(--th-footer) !important; }
 .scroll-indicator { color: var(--th-text-50) !important; }
 .scroll-indicator span { color: var(--th-text-50) !important; }
@@ -3179,20 +3282,36 @@ footer { border-color: var(--th-footer) !important; }
                         </div>
                     </div>
 
-                    <div class="flex gap-4 mt-10 reveal-left" data-reveal-delay="2">
-                        <a href="https://www.instagram.com/dz.almerr?igsh=aWszcW1pOGVpbzds" target="_blank" class="social-link magnetic-hover" aria-label="Instagram">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-                        </a>
-                        <a href="https://wa.me/6285719347038" target="_blank" class="social-link magnetic-hover" aria-label="WhatsApp">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                        </a>
-                        <a href="https://tiktok.com/@dziro99" target="_blank" class="social-link magnetic-hover" aria-label="TikTok">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
-                        </a>
-                        <a href="https://dzakyalmer.github.io" target="_blank" class="social-link magnetic-hover" aria-label="Portfolio">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        </a>
-                    </div>
+                    <ul class="social-icons example-2 reveal-left" data-reveal-delay="2">
+                        <li class="icon-content">
+                            <a href="https://www.instagram.com/dz.almerr?igsh=aWszcW1pOGVpbzds" target="_blank" data-social="instagram" aria-label="Instagram">
+                                <div class="filled"></div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                            </a>
+                            <div class="tooltip">Instagram</div>
+                        </li>
+                        <li class="icon-content">
+                            <a href="https://wa.me/6285719347038" target="_blank" data-social="whatsapp" aria-label="WhatsApp">
+                                <div class="filled"></div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                            </a>
+                            <div class="tooltip">WhatsApp</div>
+                        </li>
+                        <li class="icon-content">
+                            <a href="https://tiktok.com/@dz.almerr" target="_blank" data-social="tiktok" aria-label="TikTok">
+                                <div class="filled"></div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+                            </a>
+                            <div class="tooltip">TikTok</div>
+                        </li>
+                        <li class="icon-content">
+                            <a href="https://dzakyalmer.github.io" target="_blank" data-social="website" aria-label="Website">
+                                <div class="filled"></div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                            </a>
+                            <div class="tooltip">Website</div>
+                        </li>
+                    </ul>
                 </div>
 
                 <div class="glass rounded-3xl p-8 md:p-10 reveal-right">
