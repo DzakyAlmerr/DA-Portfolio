@@ -2194,11 +2194,11 @@ footer { border-color: var(--th-footer) !important; }
 }
 .button.sent .state--sent span {
   opacity: 0;
-  animation: slideDown 0.8s ease forwards calc(var(--i) * 0.2s);
+  animation: slideDown 0.5s ease forwards calc(var(--i) * 0.08s);
 }
 .button.sent .state--sent .icon svg {
   opacity: 0;
-  animation: appear 1.2s ease forwards 0.8s;
+  animation: appear 0.6s ease forwards 0.15s;
 }
 @keyframes appear {
   0% {
@@ -4575,11 +4575,11 @@ const CanvasObserver = {
                         showToast('Message sent successfully! I will get back to you soon.', 'success');
                         form.reset();
 
-                        // Step 5: Reset after 3 seconds
+                        // Step 5: Reset after 2.2 seconds
                         setTimeout(() => {
                             btn.classList.remove('sent');
                             btn.disabled = false;
-                        }, 3000);
+                        }, 2200);
                     } else {
                         throw new Error(data.error || 'Failed to send message');
                     }
@@ -4596,7 +4596,7 @@ const CanvasObserver = {
                             btn.classList.remove('processing');
                             btn.disabled = false;
                         }
-                    }, 3500);
+                    }, 3000);
                 }
             }, 1200); // Wait 1200ms total (800ms plane + 400ms processing visible)
         });
