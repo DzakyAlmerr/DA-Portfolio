@@ -120,15 +120,23 @@
         /* Glass */
         .glass {
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        @supports (backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px)) {
+            .glass {
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+            }
         }
         .glass-strong {
             background: rgba(10, 10, 18, 0.85);
-            backdrop-filter: blur(30px) saturate(200%);
-            -webkit-backdrop-filter: blur(30px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        @supports (backdrop-filter: blur(30px)) or (-webkit-backdrop-filter: blur(30px)) {
+            .glass-strong {
+                backdrop-filter: blur(30px) saturate(200%);
+                -webkit-backdrop-filter: blur(30px) saturate(200%);
+            }
         }
 
         /* Gradient Text */
@@ -1711,6 +1719,7 @@ body.preload-hidden * {
     0 0 40px 12px rgba(251, 191, 36, 0.3),
     0 0 90px 35px rgba(251, 191, 36, 0.15),
     0 0 160px 70px rgba(251, 191, 36, 0.06);
+  will-change: transform;
   z-index: 2;
 }
 
@@ -1731,6 +1740,7 @@ body.preload-hidden * {
   );
   filter: blur(25px);
   z-index: 1;
+  will-change: transform, opacity;
   animation: atmosphereBreathe 8s ease-in-out infinite;
 }
 
@@ -1789,7 +1799,8 @@ body.preload-hidden * {
     rgba(251, 191, 36, 0.06) 352deg,
     transparent 360deg
   );
-  filter: blur(8px);
+  filter: blur(4px);
+  will-change: transform;
   animation: raysRotate 120s linear infinite;
   z-index: 0;
 }
@@ -1823,6 +1834,8 @@ body.preload-hidden * {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.8s ease;
+  will-change: transform;
+  contain: layout style;
 }
 
 [data-theme="light"] .cloud-bg {
@@ -1907,36 +1920,6 @@ body.preload-hidden * {
   animation: cloudDrift4 65s linear infinite;
 }
 
-/* Cloud 5 — tengah kanan */
-[data-theme="light"] .cloud-bg.cloud-5 {
-  top: 30%;
-  left: 50%;
-  width: 260px;
-  height: 85px;
-  background: 
-    radial-gradient(ellipse 100px 40px at 30% 50%, rgba(100,116,139,0.14) 0%, transparent 80%),
-    radial-gradient(ellipse 80px 35px at 70% 48%, rgba(100,116,139,0.11) 0%, transparent 80%);
-  border-radius: 50%;
-  filter: blur(14px);
-  z-index: 1;
-  animation: cloudDrift5 80s linear infinite;
-}
-
-/* Cloud 6 — bawah kiri */
-[data-theme="light"] .cloud-bg.cloud-6 {
-  top: 80%;
-  left: 15%;
-  width: 340px;
-  height: 105px;
-  background: 
-    radial-gradient(ellipse 130px 50px at 25% 50%, rgba(100,116,139,0.17) 0%, transparent 80%),
-    radial-gradient(ellipse 100px 42px at 60% 48%, rgba(100,116,139,0.13) 0%, transparent 80%);
-  border-radius: 50%;
-  filter: blur(16px);
-  z-index: 1;
-  animation: cloudDrift6 70s linear infinite;
-}
-
 /* Animations */
 @keyframes cloudFloatSun {
   0%, 100% { transform: translateX(0) translateY(0); }
@@ -1964,17 +1947,7 @@ body.preload-hidden * {
   50% { transform: translateX(-25vw); }
   100% { transform: translateX(0); }
 }
-@keyframes cloudDrift5 {
-  0% { transform: translateX(0) translateY(0); }
-  33% { transform: translateX(-20vw) translateY(-10px); }
-  66% { transform: translateX(15vw) translateY(6px); }
-  100% { transform: translateX(0) translateY(0); }
-}
-@keyframes cloudDrift6 {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(28vw); }
-  100% { transform: translateX(0); }
-}
+
 
 /* Hide in dark mode */
 [data-theme="dark"] .sun-container,
@@ -2791,6 +2764,7 @@ footer { border-color: var(--th-footer) !important; }
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
     <!-- Theme + transition preload (must run before first paint) -->
@@ -2875,8 +2849,7 @@ footer { border-color: var(--th-footer) !important; }
     <div class="cloud-bg cloud-2"></div>
     <div class="cloud-bg cloud-3"></div>
     <div class="cloud-bg cloud-4"></div>
-    <div class="cloud-bg cloud-5"></div>
-    <div class="cloud-bg cloud-6"></div>
+    
     <div class="custom-cursor" id="cursor"></div>
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="scroll-progress" id="scroll-progress"></div>
@@ -3060,7 +3033,7 @@ footer { border-color: var(--th-footer) !important; }
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-32 relative">
+    <section id="about" class="py-32 relative" style="content-visibility:auto;contain-intrinsic-size:0 500px;">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid lg:grid-cols-2 gap-16 items-start">
                 <div class="lg:sticky lg:top-32">
@@ -3146,7 +3119,7 @@ footer { border-color: var(--th-footer) !important; }
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="py-32 relative overflow-hidden">
+    <section id="skills" class="py-32 relative overflow-hidden" style="content-visibility:auto;contain-intrinsic-size:0 500px;">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-20">
                 <span class="text-indigo-400 text-sm font-medium tracking-widest uppercase mb-4 block reveal">Expertise</span>
@@ -3268,7 +3241,7 @@ footer { border-color: var(--th-footer) !important; }
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="py-32 relative">
+    <section id="projects" class="py-32 relative" style="content-visibility:auto;contain-intrinsic-size:0 500px;">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
                 <span class="text-indigo-400 text-sm font-medium tracking-widest uppercase mb-4 block reveal">Portfolio</span>
@@ -3438,7 +3411,7 @@ footer { border-color: var(--th-footer) !important; }
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="py-32 relative">
+    <section id="experience" class="py-32 relative" style="content-visibility:auto;contain-intrinsic-size:0 500px;">
         <div class="max-w-5xl mx-auto px-6">
             <div class="text-center mb-20">
                 <span class="text-indigo-400 text-sm font-medium tracking-widest uppercase mb-4 block reveal">Journey</span>
@@ -3520,7 +3493,7 @@ footer { border-color: var(--th-footer) !important; }
     </section>
 
     <!-- Achievements Section -->
-    <section id="achievements" class="py-32 relative">
+    <section id="achievements" class="py-32 relative" style="content-visibility:auto;contain-intrinsic-size:0 500px;">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-20">
                 <span class="text-indigo-400 text-sm font-medium tracking-widest uppercase mb-4 block reveal">Recognition</span>
@@ -3630,7 +3603,7 @@ footer { border-color: var(--th-footer) !important; }
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-32 relative">
+    <section id="contact" class="py-32 relative" style="content-visibility:auto;contain-intrinsic-size:0 500px;">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid lg:grid-cols-2 gap-16">
                 <div>
@@ -5384,6 +5357,50 @@ const CanvasObserver = {
                 });
             });
         })();
+        
+// ============================================
+// ANIMATION PERFORMANCE MANAGER
+// Pauses sun/cloud animations when tab hidden or not visible
+// ============================================
+(function() {
+    const animElements = document.querySelectorAll('.sun-rays, .sun-atmosphere, .cloud-bg');
+    let isVisible = true;
+    let isPageActive = !document.hidden;
+
+    function setAnimationState(play) {
+        animElements.forEach(el => {
+            if (el) el.style.animationPlayState = play ? 'running' : 'paused';
+        });
+    }
+
+    // Pause when tab hidden
+    document.addEventListener('visibilitychange', () => {
+        isPageActive = !document.hidden;
+        if (isPageActive && isVisible) {
+            setAnimationState(true);
+        } else {
+            setAnimationState(false);
+        }
+    });
+
+    // Pause when sun container not in viewport (IntersectionObserver)
+    const sunContainer = document.querySelector('.sun-container');
+    if (sunContainer && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+            if (isVisible && isPageActive) {
+                setAnimationState(true);
+            } else {
+                setAnimationState(false);
+            }
+        }, { threshold: 0 });
+        observer.observe(sunContainer);
+    }
+
+    // Initial state
+    setAnimationState(true);
+})();
+
         // ============================================
         // THEME TOGGLE
         // ============================================
