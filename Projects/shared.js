@@ -970,6 +970,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroParallax();
     initThemeToggle();
     initScrollToTop();
+    initSunCloudsManager();
 
     // Initialize gallery if present
     const galleryContainer = document.querySelector('.gallery-wrapper');
@@ -999,6 +1000,51 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('load', () => {
     initIcons();
 });
+
+// ============================================
+// SUN/CLOUDS ANIMATION PERFORMANCE MANAGER
+// Pauses sun/cloud animations when tab hidden or not visible
+// ============================================
+function initSunCloudsManager() {
+    const animElements = document.querySelectorAll('.sun-rays, .sun-atmosphere, .cloud-bg');
+    if (!animElements.length) return;
+
+    let isVisible = true;
+    let isPageActive = !document.hidden;
+
+    function setAnimationState(play) {
+        animElements.forEach(el => {
+            if (el) el.style.animationPlayState = play ? 'running' : 'paused';
+        });
+    }
+
+    // Pause when tab hidden
+    document.addEventListener('visibilitychange', () => {
+        isPageActive = !document.hidden;
+        if (isPageActive && isVisible) {
+            setAnimationState(true);
+        } else {
+            setAnimationState(false);
+        }
+    });
+
+    // Pause when sun container not in viewport (IntersectionObserver)
+    const sunContainer = document.querySelector('.sun-container');
+    if (sunContainer && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+            if (isVisible && isPageActive) {
+                setAnimationState(true);
+            } else {
+                setAnimationState(false);
+            }
+        }, { threshold: 0 });
+        observer.observe(sunContainer);
+    }
+
+    // Initial state
+    setAnimationState(true);
+}
 
 // ============================================
 // THEME TOGGLE
