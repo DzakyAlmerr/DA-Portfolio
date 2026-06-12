@@ -1031,6 +1031,13 @@
   --th-noise: 0.015;
 }
 
+
+/* Light mode body background */
+[data-theme="light"] body {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
 /* Transition Overlay */
 .theme-transition-overlay {
   position: fixed;
