@@ -1998,8 +1998,8 @@ footer { border-color: var(--th-footer) !important; }
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 200px;
-  height: 200px;
+  width: 280px;
+  height: 280px;
   border-radius: 50%;
   background: radial-gradient(
     circle at 45% 40%,
@@ -2278,4 +2278,113 @@ footer { border-color: var(--th-footer) !important; }
 /* Sun container stays at background layer */
 [data-theme="light"] .sun-container {
   z-index: 0;
+}
+
+
+
+
+/* ============================================
+   CRESCENT MOON — RELIABLE OVERLAPPING CIRCLES
+   ============================================ */
+
+.moon-container {
+  position: fixed;
+  top: -40px;
+  right: -40px;
+  width: 280px;
+  height: 280px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+[data-theme="dark"] .moon-container {
+  opacity: 1;
+}
+
+[data-theme="light"] .moon-container {
+  opacity: 0 !important;
+}
+
+/* Soft ambient glow around moon */
+.moon-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 45% 40%,
+    rgba(226, 232, 240, 0.06) 0%,
+    rgba(129, 140, 248, 0.04) 30%,
+    transparent 60%
+  );
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+[data-theme="dark"] .moon-glow {
+  opacity: 1;
+}
+
+/* Crescent moon — reliable overlapping circles technique */
+.moon-crescent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(241, 245, 249, 0.95);
+  box-shadow: 
+    0 0 30px rgba(226, 232, 240, 0.35),
+    0 0 80px rgba(129, 140, 248, 0.15);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .moon-crescent {
+  opacity: 1;
+}
+
+/* The dark circle that covers part of the moon to create crescent */
+.moon-crescent::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 26px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #050508;
+  box-shadow: 0 0 8px #050508;
+}
+
+/* Light leak — subtle ambient silver light */
+.moon-light-leak {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse 50% 50% at 40% 35%,
+    rgba(226, 232, 240, 0.02) 0%,
+    transparent 55%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+[data-theme="dark"] .moon-light-leak {
+  opacity: 1;
 }
