@@ -2250,3 +2250,32 @@ footer { border-color: var(--th-footer) !important; }
                 transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     pointer-events: none;
 }
+
+/* ============================================
+   SUN/CLOUDS Z-INDEX FIX — Make visible in hero
+   ============================================ */
+
+/* Remove solid background from hero so sun is visible through orbs */
+[data-theme="light"] .project-hero {
+  background: transparent !important;
+  z-index: auto;
+}
+
+/* Remove z-index that blocks sun */
+[data-theme="light"] .main-content {
+  z-index: auto;
+}
+
+/* Ensure proper stacking within hero:
+   sun (0) → hero-bg orbs (auto, transparent) → hero-content (10) */
+[data-theme="light"] .project-hero-bg {
+  z-index: 0;
+}
+[data-theme="light"] .project-hero-content {
+  z-index: 10;
+}
+
+/* Sun container stays at background layer */
+[data-theme="light"] .sun-container {
+  z-index: 0;
+}
