@@ -79,12 +79,6 @@
             font-family: 'Inter', sans-serif;
         }
 
-        /* Light mode body background */
-        [data-theme="light"] body {
-            background: #f8fafc;
-            color: #0f172a;
-        }
-
         @media (pointer: coarse) {
             body { cursor: auto; }
             .custom-cursor { display: none !important; }
@@ -1706,94 +1700,118 @@ body.preload-hidden * {
   opacity: 1;
 }
 
-/* ---- CRESCENT MOON (Dark Mode Only) ---- */
-
-
-/* ============================================
-   CRESCENT MOON — RELIABLE OVERLAPPING CIRCLES
-   ============================================ */
-
-.moon-container {
-  position: fixed;
-  top: -40px;
-  right: -40px;
-  width: 280px;
-  height: 280px;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-}
-
-[data-theme="dark"] .moon-container {
-  opacity: 1;
-}
-
-[data-theme="light"] .moon-container {
-  opacity: 0 !important;
-}
-
-/* Soft ambient glow around moon */
-.moon-glow {
+/* ---- Natural Sun Body (3D sphere effect) ---- */
+[data-theme="light"] .sun-core {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 260px;
-  height: 260px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: 
+    radial-gradient(circle at 28% 22%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 12%),
+    radial-gradient(circle at 35% 30%, #fefce8 0%, #fef08a 25%, transparent 50%),
+    radial-gradient(circle at 40% 35%, #fcd34d 0%, #fbbf24 50%, #f59e0b 85%, #d97706 100%);
+  box-shadow:
+    inset -12px -12px 30px rgba(146, 64, 14, 0.35),
+    inset 8px 8px 20px rgba(255, 251, 235, 0.6),
+    0 0 40px 12px rgba(251, 191, 36, 0.3),
+    0 0 90px 35px rgba(251, 191, 36, 0.15),
+    0 0 160px 70px rgba(251, 191, 36, 0.06);
+  will-change: transform;
+  z-index: 2;
+}
+
+/* ---- Sun Atmosphere (soft diffuse halo) ---- */
+[data-theme="light"] .sun-atmosphere {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   background: radial-gradient(
     circle at 45% 40%,
-    rgba(226, 232, 240, 0.06) 0%,
-    rgba(129, 140, 248, 0.04) 30%,
-    transparent 60%
+    rgba(253, 224, 71, 0.12) 0%,
+    rgba(251, 191, 36, 0.06) 45%,
+    transparent 75%
   );
-  filter: blur(20px);
-  opacity: 0;
-  transition: opacity 0.8s ease;
+  filter: blur(25px);
+  z-index: 1;
+  will-change: transform, opacity;
+  animation: atmosphereBreathe 8s ease-in-out infinite;
 }
 
-[data-theme="dark"] .moon-glow {
-  opacity: 1;
+@keyframes atmosphereBreathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
 }
 
-/* Crescent moon — reliable overlapping circles technique */
-.moon-crescent {
+/* ---- Natural Light Rays (organic, soft beams) ---- */
+[data-theme="light"] .sun-rays {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100px;
-  height: 100px;
+  width: 280px;
+  height: 280px;
   border-radius: 50%;
-  background: rgba(241, 245, 249, 0.95);
-  box-shadow: 
-    0 0 30px rgba(226, 232, 240, 0.35),
-    0 0 80px rgba(129, 140, 248, 0.15);
-  opacity: 0;
-  transition: opacity 0.8s ease;
-  overflow: hidden;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(251, 191, 36, 0.03) 8deg,
+    rgba(251, 191, 36, 0.08) 15deg,
+    rgba(251, 191, 36, 0.02) 22deg,
+    transparent 30deg,
+    transparent 40deg,
+    rgba(251, 191, 36, 0.04) 48deg,
+    rgba(251, 191, 36, 0.09) 58deg,
+    rgba(251, 191, 36, 0.03) 68deg,
+    transparent 78deg,
+    transparent 88deg,
+    rgba(251, 191, 36, 0.05) 95deg,
+    rgba(251, 191, 36, 0.10) 108deg,
+    rgba(251, 191, 36, 0.04) 118deg,
+    transparent 128deg,
+    transparent 140deg,
+    rgba(251, 191, 36, 0.03) 148deg,
+    rgba(251, 191, 36, 0.07) 160deg,
+    rgba(251, 191, 36, 0.02) 170deg,
+    transparent 180deg,
+    transparent 190deg,
+    rgba(251, 191, 36, 0.04) 198deg,
+    rgba(251, 191, 36, 0.09) 210deg,
+    rgba(251, 191, 36, 0.03) 220deg,
+    transparent 230deg,
+    transparent 242deg,
+    rgba(251, 191, 36, 0.05) 250deg,
+    rgba(251, 191, 36, 0.08) 262deg,
+    rgba(251, 191, 36, 0.03) 272deg,
+    transparent 282deg,
+    transparent 295deg,
+    rgba(251, 191, 36, 0.04) 303deg,
+    rgba(251, 191, 36, 0.10) 315deg,
+    rgba(251, 191, 36, 0.05) 325deg,
+    transparent 335deg,
+    transparent 345deg,
+    rgba(251, 191, 36, 0.06) 352deg,
+    transparent 360deg
+  );
+  filter: blur(4px);
+  will-change: transform;
+  animation: raysRotate 120s linear infinite;
+  z-index: 0;
 }
 
-[data-theme="dark"] .moon-crescent {
-  opacity: 1;
+@keyframes raysRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* The dark circle that covers part of the moon to create crescent */
-.moon-crescent::after {
-  content: '';
-  position: absolute;
-  top: -12px;
-  left: 26px;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: #050508;
-  box-shadow: 0 0 8px #050508;
-}
-
-/* Light leak — subtle ambient silver light */
-.moon-light-leak {
+/* ---- Light Leak (warm ambient spill) ---- */
+[data-theme="light"] .sun-light-leak {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1802,18 +1820,228 @@ body.preload-hidden * {
   height: 600px;
   border-radius: 50%;
   background: radial-gradient(
-    ellipse 50% 50% at 40% 35%,
-    rgba(226, 232, 240, 0.02) 0%,
-    transparent 55%
+    ellipse 55% 45% at 40% 35%,
+    rgba(251, 191, 36, 0.04) 0%,
+    transparent 60%
   );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---- OVERCAST GRAY CLOUDS (mendung, menutupi matahari) ---- */
+[data-theme="light"] .cloud-bg {
+  position: fixed;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.8s ease;
+  will-change: transform;
+  contain: layout style;
 }
 
-[data-theme="dark"] .moon-light-leak {
+[data-theme="light"] .cloud-bg {
   opacity: 1;
 }
+
+/* Cloud yang menutupi matahari — di depan sun */
+[data-theme="light"] .cloud-bg.cloud-sun-cover {
+  top: -10px;
+  right: 10px;
+  width: 200px;
+  height: 90px;
+  background: 
+    radial-gradient(ellipse 80px 40px at 30% 50%, rgba(100,116,139,0.55) 0%, transparent 80%),
+    radial-gradient(ellipse 60px 35px at 60% 45%, rgba(100,116,139,0.45) 0%, transparent 80%),
+    radial-gradient(ellipse 50px 30px at 80% 55%, rgba(100,116,139,0.40) 0%, transparent 80%);
+  border-radius: 50%;
+  filter: blur(8px);
+  z-index: 2;
+  animation: cloudFloatSun 25s ease-in-out infinite;
+}
+
+/* Cloud 1 — besar di kiri atas */
+[data-theme="light"] .cloud-bg.cloud-1 {
+  top: 2%;
+  left: -10%;
+  width: 380px;
+  height: 120px;
+  background: 
+    radial-gradient(ellipse 140px 55px at 25% 50%, rgba(100,116,139,0.22) 0%, transparent 80%),
+    radial-gradient(ellipse 110px 45px at 55% 45%, rgba(100,116,139,0.18) 0%, transparent 80%),
+    radial-gradient(ellipse 90px 40px at 80% 55%, rgba(100,116,139,0.14) 0%, transparent 80%);
+  border-radius: 50%;
+  filter: blur(18px);
+  z-index: 1;
+  animation: cloudDrift1 60s linear infinite;
+}
+
+/* Cloud 2 — kanan atas */
+[data-theme="light"] .cloud-bg.cloud-2 {
+  top: 15%;
+  right: 8%;
+  width: 300px;
+  height: 100px;
+  background: 
+    radial-gradient(ellipse 120px 50px at 30% 50%, rgba(100,116,139,0.18) 0%, transparent 80%),
+    radial-gradient(ellipse 90px 40px at 65% 48%, rgba(100,116,139,0.14) 0%, transparent 80%);
+  border-radius: 50%;
+  filter: blur(16px);
+  z-index: 1;
+  animation: cloudDrift2 75s linear infinite;
+}
+
+/* Cloud 3 — besar tengah kiri */
+[data-theme="light"] .cloud-bg.cloud-3 {
+  top: 40%;
+  left: -8%;
+  width: 450px;
+  height: 140px;
+  background: 
+    radial-gradient(ellipse 160px 60px at 20% 50%, rgba(100,116,139,0.16) 0%, transparent 80%),
+    radial-gradient(ellipse 130px 50px at 50% 45%, rgba(100,116,139,0.13) 0%, transparent 80%),
+    radial-gradient(ellipse 100px 45px at 80% 55%, rgba(100,116,139,0.10) 0%, transparent 80%);
+  border-radius: 50%;
+  filter: blur(22px);
+  z-index: 1;
+  animation: cloudDrift3 90s linear infinite;
+}
+
+/* Cloud 4 — kanan bawah */
+[data-theme="light"] .cloud-bg.cloud-4 {
+  top: 65%;
+  right: -10%;
+  width: 360px;
+  height: 110px;
+  background: 
+    radial-gradient(ellipse 130px 50px at 25% 50%, rgba(100,116,139,0.20) 0%, transparent 80%),
+    radial-gradient(ellipse 100px 42px at 60% 48%, rgba(100,116,139,0.15) 0%, transparent 80%);
+  border-radius: 50%;
+  filter: blur(18px);
+  z-index: 1;
+  animation: cloudDrift4 65s linear infinite;
+}
+
+/* Animations */
+@keyframes cloudFloatSun {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  33% { transform: translateX(12px) translateY(-6px); }
+  66% { transform: translateX(-8px) translateY(4px); }
+}
+
+@keyframes cloudDrift1 {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(40vw); }
+  100% { transform: translateX(0); }
+}
+@keyframes cloudDrift2 {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-30vw); }
+  100% { transform: translateX(0); }
+}
+@keyframes cloudDrift3 {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(35vw); }
+  100% { transform: translateX(0); }
+}
+@keyframes cloudDrift4 {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-25vw); }
+  100% { transform: translateX(0); }
+}
+
+
+/* Hide in dark mode */
+[data-theme="dark"] .sun-container,
+[data-theme="dark"] .cloud-bg {
+  opacity: 0 !important;
+}
+
+/* Z-index layering */
+[data-theme="light"] .sun-container { z-index: 0; }
+[data-theme="light"] .cloud-bg { z-index: 1; }
+[data-theme="light"] .cloud-bg.cloud-sun-cover { z-index: 2; }
+[data-theme="light"] #particle-canvas { z-index: 3; }
+[data-theme="light"] .main-content { position: relative; z-index: 4; }
+[data-theme="light"] #sidebar { z-index: 1000; }
+
+/* Light Mode Overrides */
+body, .loading-screen {
+  background: var(--th-bg) !important;
+  color: var(--th-text) !important;
+}
+.noise { opacity: var(--th-noise) !important; }
+.glass {
+  background: var(--th-glass) !important;
+  border-color: var(--th-glass-b) !important;
+}
+.glass-strong {
+  background: var(--th-glass-s) !important;
+  border-color: var(--th-glass-s-b) !important;
+}
+.sidebar {
+  background: var(--th-sidebar) !important;
+  border-color: var(--th-sidebar-b) !important;
+}
+.sidebar-footer { border-color: var(--th-glass-b) !important; }
+.nav-item { color: var(--th-nav) !important; }
+.nav-item:hover, .nav-item.active { color: var(--th-text) !important; }
+.nav-tooltip {
+  background: var(--th-glass-s) !important;
+  border-color: var(--th-glass-b) !important;
+}
+.nav-tooltip::before { border-right-color: var(--th-glass-s) !important; }
+.availability-badge {
+  background: rgba(34,197,94,0.08) !important;
+  border-color: rgba(34,197,94,0.15) !important;
+  color: #22c55e !important;
+}
+[data-theme="light"] .availability-badge {
+  background: rgba(34,197,94,0.12) !important;
+  border-color: rgba(34,197,94,0.25) !important;
+  color: #16a34a !important;
+}
+.form-field input, .form-field textarea {
+  background: var(--th-form) !important;
+  border-color: var(--th-form-b) !important;
+  color: var(--th-text) !important;
+}
+.form-field input:focus, .form-field textarea:focus {
+  background: var(--th-form-f) !important;
+  border-color: rgba(129,140,248,0.5) !important;
+}
+.form-field label { color: var(--th-text-50) !important; }
+.form-field input:focus + label,
+.form-field input:not(:placeholder-shown) + label,
+.form-field textarea:focus + label,
+.form-field textarea:not(:placeholder-shown) + label {
+  background: var(--th-bg) !important;
+  color: #818cf8 !important;
+}
+.filter-btn {
+  border-color: var(--th-filter) !important;
+  color: var(--th-text-60) !important;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: rgba(129,140,248,0.1) !important;
+  border-color: rgba(129,140,248,0.3) !important;
+  color: #818cf8 !important;
+}
+
+footer { border-color: var(--th-footer) !important; }
+.scroll-indicator { color: var(--th-text-50) !important; }
+.scroll-indicator span { color: var(--th-text-50) !important; }
+
+/* Tailwind utilities override for light mode */
+[data-theme="light"] .text-white\/90 { color: rgba(15,23,42,0.9) !important; }
+[data-theme="light"] .text-white\/60 { color: rgba(15,23,42,0.6) !important; }
+[data-theme="light"] .text-white\/50 { color: rgba(15,23,42,0.5) !important; }
+[data-theme="light"] .text-white\/40 { color: rgba(15,23,42,0.4) !important; }
+[data-theme="light"] .text-white\/30 { color: rgba(15,23,42,0.3) !important; }
+[data-theme="light"] .bg-white\/5 { background-color: rgba(0,0,0,0.05) !important; }
+[data-theme="light"] .bg-white\/10 { background-color: rgba(0,0,0,0.1) !important; }
+[data-theme="light"] .border-white\/5 { border-color: rgba(0,0,0,0.05) !important; }
+[data-theme="light"] .border-white\/10 { border-color: rgba(0,0,0,0.1) !important; }
+[data-theme="light"] .border-white\/20 { border-color: rgba(0,0,0,0.2) !important; }
+
 /* ============================================
    LIGHT MODE - TEXT COLOR FIXES
    ============================================ */
@@ -2615,13 +2843,6 @@ body.preload-hidden * {
         <div class="sun-rays"></div>
         <div class="sun-atmosphere"></div>
         <div class="sun-core"></div>
-        <div class="moon-container">
-        <div class="moon-light-leak"></div>
-        <div class="moon-glow"></div>
-        <div class="moon-crescent"></div>
-    </div>
-
-
     </div>
 <div class="cloud-bg cloud-sun-cover"></div>
     <div class="cloud-bg cloud-1"></div>
