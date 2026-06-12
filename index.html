@@ -1246,6 +1246,66 @@
         /* ============================================
    THEME SYSTEM
    ============================================ */
+
+/* Smooth transition for all theme-affected properties */
+body,
+.glass,
+.glass-strong,
+.sidebar,
+.nav-item,
+.form-field input,
+.form-field textarea,
+.form-field label,
+.filter-btn,
+.social-link,
+.magnetic-btn,
+footer,
+.scroll-to-top,
+.copy-toast,
+.project-hero,
+.project-hero-thumb,
+.overview-card,
+.workflow-visual,
+.tech-card,
+.stat-card,
+.gallery-item,
+.gallery-nav-btn,
+.gallery-progress-dot,
+.screenshot-modal,
+.screenshot-modal-close,
+.screenshot-modal-nav,
+.screenshot-modal-counter,
+.mobile-menu-btn,
+.back-to-portfolio,
+.timeline-line,
+.timeline-node,
+.skill-node,
+.achievement-card,
+.availability-badge,
+.project-loading,
+.page-transition-overlay,
+.theme-transition-overlay,
+.sun-container,
+.cloud-bg,
+.noise {
+  transition: background-color 0.6s ease, color 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease, opacity 0.6s ease;
+}
+
+/* Gradient text transition */
+.gradient-text,
+.gradient-text-hero,
+.project-hero-text .project-title,
+.section-header .section-title,
+.stat-number,
+.brand-text,
+footer .gradient-text {
+  transition: background 0.6s ease, -webkit-background-clip 0.6s ease, background-clip 0.6s ease;
+}
+
+/* Prevent transition during page load */
+body.preload-hidden * {
+  transition: none !important;
+}
 :root {
   --th-bg: #050508;
   --th-text: #e2e8f0;
@@ -1298,8 +1358,10 @@
   pointer-events: none;
   background: var(--th-bg);
   clip-path: circle(0% at var(--ox, 130px) var(--oy, 50%));
-  transition: clip-path 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-  box-shadow: inset 0 0 80px rgba(129,140,248,0.15);
+  transition: clip-path 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: clip-path;
+  transform: translateZ(0);
+  contain: layout style paint;
 }
 .theme-transition-overlay.active {
   clip-path: circle(150% at var(--ox, 130px) var(--oy, 50%));
@@ -5343,35 +5405,60 @@ const CanvasObserver = {
             updateLabel(initial);
 
             toggle.addEventListener('click', () => {
+                if (overlay.classList.contains('active')) return;
+
                 const current = root.getAttribute('data-theme') || 'dark';
                 const next = current === 'light' ? 'dark' : 'light';
                 const rect = toggle.getBoundingClientRect();
                 const x = rect.left + rect.width / 2;
                 const y = rect.top + rect.height / 2;
 
+                // Pause heavy animations during transition for smooth performance
+                const particleCanvas = document.getElementById('particle-canvas');
+                const sunRays = document.querySelector('.sun-rays');
+                const sunAtmosphere = document.querySelector('.sun-atmosphere');
+                if (particleCanvas) particleCanvas.style.animationPlayState = 'paused';
+                if (sunRays) sunRays.style.animationPlayState = 'paused';
+                if (sunAtmosphere) sunAtmosphere.style.animationPlayState = 'paused';
+
+                // Phase 1: Expand overlay to cover screen (0.5s)
                 overlay.style.setProperty('--ox', x + 'px');
                 overlay.style.setProperty('--oy', y + 'px');
                 overlay.style.background = next === 'light' ? '#f8fafc' : '#050508';
                 overlay.style.clipPath = `circle(0% at ${x}px ${y}px)`;
+                overlay.style.transition = 'clip-path 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
                 overlay.style.pointerEvents = 'all';
+                overlay.classList.add('active');
 
                 requestAnimationFrame(() => {
-                    overlay.style.transition = 'clip-path 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
-                    overlay.style.clipPath = `circle(150% at ${x}px ${y}px)`;
-
-                    setTimeout(() => {
-                        root.setAttribute('data-theme', next);
-                        localStorage.setItem('theme', next);
-                        updateLabel(next);
-
-                        overlay.style.clipPath = `circle(0% at ${x}px ${y}px)`;
-
-                        setTimeout(() => {
-                            overlay.style.pointerEvents = 'none';
-                            overlay.style.transition = 'none';
-                        }, 800);
-                    }, 800);
+                    requestAnimationFrame(() => {
+                        overlay.style.clipPath = `circle(150% at ${x}px ${y}px)`;
+                    });
                 });
+
+                // Phase 2: Switch theme when overlay fully covers (at ~80% of expand)
+                setTimeout(() => {
+                    root.setAttribute('data-theme', next);
+                    localStorage.setItem('theme', next);
+                    updateLabel(next);
+                }, 400);
+
+                // Phase 3: Collapse overlay to reveal new theme (0.5s)
+                setTimeout(() => {
+                    overlay.style.transition = 'clip-path 0.5s cubic-bezier(0.65, 0, 0.35, 1)';
+                    overlay.style.clipPath = `circle(0% at ${x}px ${y}px)`;
+                }, 700);
+
+                // Phase 4: Cleanup + resume animations
+                setTimeout(() => {
+                    overlay.classList.remove('active');
+                    overlay.style.pointerEvents = 'none';
+                    overlay.style.transition = 'none';
+                    // Resume paused animations
+                    if (particleCanvas) particleCanvas.style.animationPlayState = 'running';
+                    if (sunRays) sunRays.style.animationPlayState = 'running';
+                    if (sunAtmosphere) sunAtmosphere.style.animationPlayState = 'running';
+                }, 1250);
             });
         })();
 
